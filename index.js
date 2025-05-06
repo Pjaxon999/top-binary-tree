@@ -2,17 +2,22 @@ import Tree from "./tree.js";
 
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const tree = new Tree(arr);
-
-// Print the initial tree (should be balanced)
-console.log("Initial tree:");
+console.log("Initial tree:")
 tree.prettyPrint(tree.root);
-
-// Test insert
-tree.insert(10);  // Should insert 2 into the tree
-console.log("\nTree after inserting 2:");
+// Delete test
+// no children
+console.log("attemping to delete 3");
+tree.deleteItem(3);
 tree.prettyPrint(tree.root);
-
-// Test duplicate insert
-tree.insert(7);  // Should do nothing (duplicate)
-console.log("\nTree after attempting to insert 7 (duplicate):");
+// one child
+console.log("attempting to delete 9");
+tree.deleteItem(9);
+tree.prettyPrint(tree.root);
+// two children
+console.log("attemping to delete 67");
+tree.deleteItem(67);
+tree.prettyPrint(tree.root);
+// no such value
+console.log("attemping to delete 100000");
+tree.deleteItem(10000);
 tree.prettyPrint(tree.root);

@@ -30,12 +30,7 @@ export default class Tree {
         return this.buildTreeRecursion(sortedArray, 0, sortedArray.length - 1);
     }
 
-    // insert a given value
-    insert(value) {
-        this.root = this.insertRecursive(this.root, value);
-    }
-
-    // helper function for insertion. Do nothing if there is a duplicate value
+    // helper function for insertion. Does nothing if there is a duplicate value
     insertRecursive(node, value) {
         // base case
         if (node === null) return new Node(value);
@@ -50,12 +45,70 @@ export default class Tree {
         return node;
     }
 
-    // remove a given value
+    // insert a given value
+    insert(value) {
+        this.root = this.insertRecursive(this.root, value);
+    }
+
+    // helper function for recursive delete that finds the successor
+    findSuccessor(node) {
+        let current = node.right;
+        while (current.left !== null) {
+            current = current.left;
+        }
+        return current; 
+    }
+
+    deleteRecursive(node, value) {
+        // based!
+        if (node === null) return null;
+
+        // recursive cases
+        if (value < node.data) {
+            node.left = this.deleteRecursive(node.left, value);
+        } else if (value > node.data) {
+            node.right = this.deleteRecursive(node.right, value);
+        } else {
+            if (node.left === null && node.right === null) {
+                return null;
+            }
+            if (node.left === null && node.right !== null) {
+                return node.right;
+            }
+            if (node.left !== null && node.right === null) {
+                return node.left;
+            } else {
+                let successor = this.findSuccessor(node);
+                node.data = successor.data;
+                node.right = this.deleteRecursive(node.right, successor.data);
+            }
+        }
+        return node;
+    }    
+
+    // remove a node that has the given value 
+    // needs to search through a value via tree traversal, when a value is found do the following based on the case:
     // 1. removing a node from the tree with no children => delete without update
     // 2. removing a node that has 1 child => replace with it's child. It's parent now points to it's child.
     // 3. removing a node that has 2 children => find the smallest value in the right subtree, replace node with that smallest child
     deleteItem(value) {
-        
+        this.root = this.deleteRecursive(this.root, value);
+    }
+
+    // helper function for find
+    findRecursive(node, value) {
+        if (node === null || node.data === value) return node;
+
+        if (value < node.data) {
+            return this.findRecursive(node.left, value);
+        } else if (value > node.data) {
+            return this.findRecursive(node.right, value);
+        }
+    }
+
+    // find a node with the given value
+    find(value) {
+        return this.findRecursive(this.root, value);
     }
 
     // used to show our tree structure in the console.
