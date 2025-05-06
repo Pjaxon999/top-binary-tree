@@ -111,6 +111,32 @@ export default class Tree {
         return this.findRecursive(this.root, value);
     }
 
+    // recursive helper function for levelOrder traversal
+    levelOrderRecursive(node, callback) {
+        if (node === null) return;
+    
+        let visiting = [];
+        visiting.push(node);
+        while(visiting.length !== 0) {
+            let currentNode = visiting.shift();
+            callback(currentNode);
+            if (currentNode.left !== null) visiting.push(currentNode.left);
+            if (currentNode.right !== null) visiting.push(currentNode.right);
+        }
+
+    }
+    // function that accepts a callback function and traverses the tree in breadth-first level order and calls the callback on each node
+    levelOrder(callback) {
+        if (typeof callback !== 'function'){
+            throw new Error('levelOrder requires a callback function as an argument');
+        }
+
+        //handle empty tree case
+        if (this.root === null) return;
+
+        this.levelOrderRecursive(this.root, callback);
+    }
+
     // used to show our tree structure in the console.
     prettyPrint = (node, prefix = "", isLeft = true) => {
         if (node === null) {
