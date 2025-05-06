@@ -137,6 +137,68 @@ export default class Tree {
         this.levelOrderRecursive(this.root, callback);
     }
 
+    // helper function for recursive preorder traversal
+    preOrderRecursion(node, callback){
+        if (node === null) return;
+
+        callback(node);
+        this.preOrderRecursion(node.left, callback);
+        this.preOrderRecursion(node.right, callback);
+    }
+
+    // preorder traversal depth first
+    preOrder(callback) {
+        if (typeof callback !== 'function'){
+            throw new Error('levelOrder requires a callback function as an argument');
+        }
+
+        //handle empty tree case
+        if (this.root === null) return;
+
+        this.preOrderRecursion(this.root, callback);
+    }
+
+    // helper function for recursive inorder traversal
+    inOrderTraversalRecursion(node, callback) {
+        if (node === null) return;
+
+        this.inOrderTraversalRecursion(node.left, callback);
+        callback(node);
+        this.inOrderTraversalRecursion(node.right, callback);
+    }
+
+    // inorder traversal depth first
+    inOrder(callback) {
+        if (typeof callback !== 'function'){
+            throw new Error('inOrder requires a callback function as an argument');
+        }
+
+        //handle empty tree case
+        if (this.root === null) return;
+
+        this.inOrderTraversalRecursion(this.root, callback);
+    }
+
+    // helper function for recursive postorder traversal
+    postOrderTraversalRecursion(node, callback) {
+        if (node === null) return;
+
+        this.postOrderTraversalRecursion(node.left, callback);
+        this.postOrderTraversalRecursion(node.right, callback);
+        callback(node);
+    }
+
+    // postorder traversal depth first
+    postOrder(callback) {
+        if (typeof callback !== 'function') {
+            throw new Error('postOrder requires a callback function as an argument');
+        }
+
+        // handle empty tree
+        if (this.root === null) return;
+
+        this.postOrderTraversalRecursion(this.root, callback);
+    }
     // used to show our tree structure in the console.
     prettyPrint = (node, prefix = "", isLeft = true) => {
         if (node === null) {
