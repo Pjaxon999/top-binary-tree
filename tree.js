@@ -199,6 +199,20 @@ export default class Tree {
 
         this.postOrderTraversalRecursion(this.root, callback);
     }
+
+    // recursive helper function for height
+    heightRecursion(node) {
+        if (node === null) return -1;
+        return 1 + Math.max(this.heightRecursion(node.left), this.heightRecursion(node.right));
+    }
+
+    // returns the height of a node containing the given value
+    height(value) {
+        let target = this.find(value);
+        if (target === null) return null;
+        return this.heightRecursion(target);
+    }
+
     // used to show our tree structure in the console.
     prettyPrint = (node, prefix = "", isLeft = true) => {
         if (node === null) {
