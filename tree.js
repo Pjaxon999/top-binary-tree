@@ -111,8 +111,8 @@ export default class Tree {
         return this.findRecursive(this.root, value);
     }
 
-    // recursive helper function for levelOrder traversal
-    levelOrderRecursive(node, callback) {
+    // iterative helper function for levelOrder traversal
+    levelOrderIteration(node, callback) {
         if (node === null) return;
     
         let visiting = [];
@@ -134,7 +134,7 @@ export default class Tree {
         //handle empty tree case
         if (this.root === null) return;
 
-        this.levelOrderRecursive(this.root, callback);
+        this.levelOrderIteration(this.root, callback);
     }
 
     // helper function for recursive preorder traversal
@@ -211,6 +211,31 @@ export default class Tree {
         let target = this.find(value);
         if (target === null) return null;
         return this.heightRecursion(target);
+    }
+
+    // find the depth of a node that has a given value
+    depth(value) {
+        let target = this.find(value);
+        if (target === null) return null;
+        if (this.root.data === value) return 0;
+
+        let visiting = [];
+        // need an object so I can store how far into the tree I am while iterating over it
+        visiting.push({node: this.root, depth: 0});
+
+        while(visiting.length !== 0) {
+            let currentlyVisiting = visiting.shift();
+            let currentNode = currentlyVisiting.node;
+            let currentDepth = currentlyVisiting.depth;
+
+            if (currentNode === target) return currentDepth;
+            if (currentNode.left !== null) {
+                visiting.push({node: currentNode.left, depth: currentDepth + 1});
+            }
+            if (currentNode.right !== null) {
+                visiting.push({node: currentNode.right, depth: currentDepth + 1});
+            }
+        }
     }
 
     // used to show our tree structure in the console.
