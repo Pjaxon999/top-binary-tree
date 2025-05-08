@@ -220,7 +220,7 @@ export default class Tree {
         if (this.root.data === value) return 0;
 
         let visiting = [];
-        // need an object so I can store how far into the tree I am while iterating over it
+        // need an object so I can store the depth of how far I am into the tree I am while iterating over it. Otherwise the depth is lost on each shift from the array (don't ask me how I know that)
         visiting.push({node: this.root, depth: 0});
 
         while(visiting.length !== 0) {
@@ -237,6 +237,32 @@ export default class Tree {
             }
         }
     }
+
+    // method that checks to see if the BST is balanced
+    isBalanced(node = this.root) {
+        if (node === null) return true;
+
+        const leftHeight = this.heightRecursion(node.left);
+        const rightHeight = this.heightRecursion(node.right);
+    
+        const heightDifference = Math.abs(leftHeight - rightHeight);
+        if (heightDifference > 1) {
+            return false; 
+        }
+    
+        const isLeftBalanced = this.isBalanced(node.left);
+        if (!isLeftBalanced) {
+            return false;
+        }
+
+        const isRightBalanced = this.isBalanced(node.right);
+        if (!isRightBalanced) {
+            return false;
+        }
+    
+        return true;
+    }
+
 
     // used to show our tree structure in the console.
     prettyPrint = (node, prefix = "", isLeft = true) => {
