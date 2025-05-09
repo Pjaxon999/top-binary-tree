@@ -263,6 +263,13 @@ export default class Tree {
         return true;
     }
 
+    // rebalances an unbalanced tree
+    rebalance() {
+        if (this.isBalanced() === true) return;
+        let arr = [];
+        this.inOrder(node => arr.push(node.data));
+        this.root = this.buildTree(arr);
+    }
 
     // used to show our tree structure in the console.
     prettyPrint = (node, prefix = "", isLeft = true) => {
